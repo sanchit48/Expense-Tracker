@@ -47,17 +47,19 @@ class TransactionList extends StatelessWidget {
         );
 
       })
-      : ListView.builder(
+      :
+            ListView.builder(
 
-          itemBuilder: (ctx, index) {
+            itemBuilder: (ctx, index) {
 
-            return TransactionItem(transaction: userTransaction[index], deleteTransaction: deleteTransaction);
+              return TransactionItem(transaction: userTransaction[index], deleteTransaction: deleteTransaction);
 
-          },
+            },
 
-          itemCount: userTransaction.length,
+            itemCount: userTransaction.length,
 
-      );
+        );
+
 
   }
 
