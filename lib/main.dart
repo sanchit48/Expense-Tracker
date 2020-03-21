@@ -67,11 +67,8 @@ class MyHomePage extends StatefulWidget {
 // state class
 class _MyHomePageState extends State<MyHomePage> {
 
-   final List<Transaction> _userTransaction = [
 
-     Transaction(id: 't1', title: 'New Shoes', amount: 999.99, date: DateTime.now()),
-     Transaction(id: 't2', title: 'New Shirt', amount: 599.99, date: DateTime.now()),
-     Transaction(id: 't3', title: 'New Phone', amount: 9999.99, date: DateTime.now()),
+  final List<Transaction> _userTransaction = [
 
   ];
 
@@ -100,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
 
         _userTransaction.add(Transaction(id: DateTime.now().toString(), title: title, amount: amount, date: chosenDate));
+
     });
 
   }
@@ -109,13 +107,10 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
 
       _userTransaction.removeWhere((tx) {
-
         return tx.id == id;
-
       });
 
     });
-
   }
 
   void _startAddNewTransaction(BuildContext ctx) {
@@ -134,14 +129,55 @@ class _MyHomePageState extends State<MyHomePage> {
 
   }
 
-  @override
-  Widget build(BuildContext context) {
+  List<Widget> _buildLandscapeContent(MediaQueryData mediaQuery, AppBar appBar, Widget txListWidget) {
 
-    final mediqQuery = MediaQuery.of(context);
+    return [Row(
 
-    final isLandScape = (mediqQuery.orientation == Orientation.landscape);
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
 
-    final PreferredSizeWidget appBar =  Platform.isIOS
+        Text('Show Chart', style: Theme.of(context).textTheme.title,),
+        Switch.adaptive(
+
+          activeColor: Theme.of(context).accentColor,
+          value: _showChart,
+          onChanged: (value) {
+
+            setState(() {
+              _showChart = value;
+            });
+
+          },
+
+        ),
+
+      ],
+
+    ), _showChart
+    ? Container(
+
+      height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.7,
+      child: Chart(_recentTransaction)
+
+    )
+    : txListWidget];
+
+  }
+
+  List<Widget> _buildPortraitContent(MediaQueryData mediaQuery, AppBar appBar, Widget txListWidget) {
+
+    return [Container(
+
+        height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top)*0.3,
+        child: Chart(_recentTransaction)
+
+    ), txListWidget];
+
+  }
+
+  Widget _navigationbar()  {
+
+    return Platform.isIOS
     ? CupertinoNavigationBar(
 
       middle: Text('Personal Expenses'),
@@ -153,7 +189,9 @@ class _MyHomePageState extends State<MyHomePage> {
         GestureDetector(
 
           child: Icon(CupertinoIcons.add),
-          onTap: () => _startAddNewTransaction(context),)
+          onTap: () => _startAddNewTransaction(context),
+
+        )
 
       ]),
 
@@ -175,9 +213,22 @@ class _MyHomePageState extends State<MyHomePage> {
 
     );
 
+  }
+
+
+///*********************************************BUILD****************************************************/
+
+  @override
+  Widget build(BuildContext context) {
+
+    final mediaQuery = MediaQuery.of(context);
+    final isLandScape = (mediaQuery.orientation == Orientation.landscape);
+
+    final PreferredSizeWidget appBar =  _navigationbar();
+
     final txListWidget  = Container(
 
-        height: (mediqQuery.size.height - appBar.preferredSize.height - mediqQuery.padding.top),
+        height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top),
         child: TransactionList(_userTransaction, _deleteTransaction)
 
     );
@@ -190,47 +241,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          children: <Widget>[
 
-              if(isLandScape) Row(
+            // use spread operator as children accepts widget not list
+            if(isLandScape) ..._buildLandscapeContent(mediaQuery, appBar, txListWidget),
 
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-
-                Text('Show Chart', style: Theme.of(context).textTheme.title,),
-                Switch.adaptive(
-
-                  activeColor: Theme.of(context).accentColor,
-                  value: _showChart,
-                  onChanged: (value) {
-
-                    setState(() {
-                      _showChart = value;
-                    });
-
-                  },
-
-                ),
-
-              ],
-
-            ),
-
-            if(!isLandScape) Container(
-
-              height: (mediqQuery.size.height - appBar.preferredSize.height - mediqQuery.padding.top)*0.3,
-              child: Chart(_recentTransaction)
-
-            ),
-
-            if(!isLandScape) txListWidget,
-
-            if(isLandScape)_showChart ? Container(
-
-              height: (mediqQuery.size.height - appBar.preferredSize.height - mediqQuery.padding.top)*.7,
-              child: Chart(_recentTransaction)
-
-            ) : txListWidget
+            if(!isLandScape) ..._buildPortraitContent(mediaQuery, appBar, txListWidget),
 
           ],
 
