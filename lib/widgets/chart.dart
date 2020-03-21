@@ -63,7 +63,7 @@ class Chart extends StatelessWidget {
               return Flexible(
 
                 fit: FlexFit.tight,
-                child: ChartBar(
+                child:  new ChartBar(
 
                 data['day'],
                 data['amount'],
