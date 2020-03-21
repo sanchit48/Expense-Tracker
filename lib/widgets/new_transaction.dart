@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:expense_tracker/widgets/adaptive_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +34,7 @@ class _NewTransactionState extends State<NewTransaction> {
       return;
 
     // establish connection  to addNewTransaction function
-    widget.addNewTransaction(enteredTitle, enteredAmount,_selectedDate);
+    widget.addNewTransaction(enteredTitle, enteredAmount, _selectedDate);
 
     Navigator.of(context).pop();
 
@@ -54,9 +52,10 @@ class _NewTransactionState extends State<NewTransaction> {
     ).then((pickedDate) {
 
          if(pickedDate == null)
-          return;
+            return;
 
       setState(() {
+
         _selectedDate = pickedDate;
 
       });
