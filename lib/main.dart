@@ -70,17 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Transaction> _userTransaction = [
 
-    Transaction(id: DateTime.now().toIso8601String(), title: 'ndd', amount: 44, date: DateTime.now()),
-    Transaction(id: DateTime.now().toIso8601String(), title: 'ndd', amount: 44, date: DateTime.now()),
-    Transaction(id: DateTime.now().toIso8601String(), title: 'ndd', amount: 44, date: DateTime.now()),
-    Transaction(id: DateTime.now().toIso8601String(), title: 'ndd', amount: 44, date: DateTime.now()),
-    Transaction(id: DateTime.now().toIso8601String(), title: 'ndd', amount: 44, date: DateTime.now()),
-    Transaction(id: DateTime.now().toIso8601String(), title: 'ndd', amount: 44, date: DateTime.now()),
-    Transaction(id: DateTime.now().toIso8601String(), title: 'ndd', amount: 44, date: DateTime.now()),
-    Transaction(id: DateTime.now().toIso8601String(), title: 'ndd', amount: 44, date: DateTime.now()),
-    Transaction(id: DateTime.now().toIso8601String(), title: 'ndd', amount: 44, date: DateTime.now()),
-
-
   ];
 
   bool _showChart = false;
